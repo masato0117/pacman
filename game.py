@@ -7,7 +7,7 @@ class Game():
         属性の名前
     """
     def __init__(
-
+        self,
     ) -> None:
     """
 
