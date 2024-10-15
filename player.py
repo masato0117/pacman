@@ -18,6 +18,7 @@ class Player(Item):
     """
 
     def __init__(self, x, y) -> None:
+        """一変数とプレイヤーアイコンを設定"""
         pass
 
     def get_next_pos(self, dir: tuple[int, int]) -> tuple[int, int]:
