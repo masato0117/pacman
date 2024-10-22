@@ -18,9 +18,9 @@ class Field:
     """
 
     def __init__(
-        self,
-        players: list[Player],
-        field_size: int = 6) -> None:
+            self,
+            players: list[Player],
+            field_size: int = 6) -> None:
 
         """
         Fieldクラスの初期化をする関数
@@ -93,7 +93,7 @@ class Field:
             s: 下に移動
             d: 右に移動
               p1e1
-            f1e2 
+            f1e2
             b1b2
         """
 
@@ -103,6 +103,7 @@ class Field:
             self,
             target: Item,
             items: list[Item]) -> Item | None:
+        
         """
         プレイヤー，敵，物体の位置が重なっているか判定する関数
         
@@ -126,9 +127,10 @@ class Field:
             >>> r is e
             Ture
         """
-
-        pass 
+        
+        pass
+ 
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
     
-    if __name__ == "__main__":
-        import doctest
-        doctest.testmod()
