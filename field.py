@@ -35,6 +35,7 @@ class Field:
         pass
 
     def update_field(self) -> list[list[str]]:
+
         """
         プレイヤー，敵，物体の位置を参照して，フィールドを更新する関数
 
@@ -68,6 +69,7 @@ class Field:
         pass
 
     def display_field(self) -> None:
+
         """
         フィールドを表示する関数
 
@@ -103,11 +105,10 @@ class Field:
             self,
             target: Item,
             items: list[Item]) -> Item | None:
-        
+
         """
         プレイヤー，敵，物体の位置が重なっているか判定する関数
-        
-        Args:
+            Args:
             target (Item): アイテム1
             items (list[Item]): アイテム2
 
@@ -127,10 +128,9 @@ class Field:
             >>> r is e
             Ture
         """
-        
+
         pass
- 
-if __name__ == "__main__":
-    import doctest
-    doctest.testmod()
-    
+
+    if __name__ == "__main__":
+        import doctest
+        doctest.testmod()
