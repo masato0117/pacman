@@ -20,6 +20,7 @@ class Field:
         foods: list[Food],
         blocks: list[Block],
         field_size: int 8) -> None:
+
         """
         Fieldクラスの初期化をする関数
 
@@ -130,5 +131,3 @@ class Field:
     if __name__ == "__main__":
         import doctest
         doctest.testmod()
-
->>>>>>> field
