@@ -1,4 +1,3 @@
-
 class Field:
     """Fieldクラス
     Fieldクラスではゲームフィールドを生成し表示するクラスである．
@@ -19,7 +18,7 @@ class Field:
         players: list[Player],
         enemies: list[Enemy],
         foods: list[Food],
-        blocks: list[Block]
+        blocks: list[Block],
         field_size: int 8) -> None:
         """
         Fieldクラスの初期化をする関数
@@ -29,7 +28,6 @@ class Field:
             enemies (list[Enemy]): 敵の情報
             foods (list[Food]): アイテム情報
             blocks (list[Block]): ブロックのリスト
-            fields (list[list[str]]): フィールド情報
             field_size (int): フィールドサイズ
         """
         pass
