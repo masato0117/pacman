@@ -1,3 +1,7 @@
+from item import Item
+from player import Player
+
+
 class Field:
     """Fieldクラス
     Fieldクラスではゲームフィールドを生成し表示するクラスである．
@@ -16,10 +20,7 @@ class Field:
     def __init__(
         self,
         players: list[Player],
-        enemies: list[Enemy],
-        foods: list[Food],
-        blocks: list[Block],
-        field_size: int = 8) -> None:
+        field_size: int = 6) -> None:
 
         """
         Fieldクラスの初期化をする関数
@@ -100,8 +101,8 @@ class Field:
 
     def collision_detection(
             self,
-            target:Item,
-            items:list[Item]) -> Item | None:
+            target: Item,
+            items: list[Item]) -> Item | None:
         """
         プレイヤー，敵，物体の位置が重なっているか判定する関数
         
