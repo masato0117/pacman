@@ -42,7 +42,12 @@ class Item:
             >>> item.status
             True
         """
-        pass
+        self.now_x = x   # 現在のx座標
+        self.now_y = y   # 現在のy座標
+        self.next_x = x   # 次の時刻でのx座標
+        self.next_y = y   # 次の時刻でのy座標
+        self.status = True   # アイテムの状態(True>存在,False>存在しない・消滅した)
+        self.icon = ""   # 表示されるアイテムのアイコン
 
     def get_next_pos(self) -> tuple[int, int]:
         """
@@ -57,7 +62,7 @@ class Item:
             >>> item.get_next_pos()
             (2, 3)
         """
-        pass
+        return (self.now_x, self.now_y)
 
     def get_pos(self) -> tuple[int, int]:
         """
@@ -72,7 +77,7 @@ class Item:
             >>> item.get_pos()
             (2, 3)
         """
-        pass
+        return (self.now_x, self.now_y)
 
     def update_pos(self, stuck: bool = False) -> None:
         """
@@ -96,4 +101,13 @@ class Item:
             (3, 4)
 
         """
-        pass
+        if stuck:
+            self.next_x = self.now_x
+            self.next_y = self.now_y
+        else:
+            self.next_x = self.now_x
+            self.next_y = self.now_y
+
+    if __name__ == "__main__":
+        import doctest
+        doctest.testmod()
