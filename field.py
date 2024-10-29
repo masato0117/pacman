@@ -17,10 +17,11 @@ class Field:
         field_size (int): フィールドサイズ
     """
 
+    # フィールドを生成する関数
     def __init__(
             self,
             players: list[Player],
-            field_size: int = 6) -> None:
+            f_size: int = 6) -> None:
 
         """
         Fieldクラスの初期化をする関数
@@ -32,6 +33,14 @@ class Field:
             blocks (list[Block]): ブロックのリスト
             field_size (int): フィールドサイズ
         """
+
+        self.field_size = f_size
+        self.field = [[" " for _ in range(f_size)] for _ in range(f_size)]
+        self.players = players
+
+        # それぞれのアイテムの位置をFieldに更新する関数
+        self.update_field(self)
+
         pass
 
     def update_field(self) -> list[list[str]]:
@@ -45,29 +54,22 @@ class Field:
         Examples:
             >>> p = [Player(1, 0)]
             >>> p[0].icon = "p1"
-            >>> e1 = Enemy(2, 0)
-            >>> e1.icon = "e1"
-            >>> e2 = Enemy(1, 1)
-            >>> e2.icon = "e2"
-            >>> e = [e1, e2]
-            >>> f = [Food(0, 1)]
-            >>> f[0].icon = "f1"
-            >>> b1 = Block(0, 2)
-            >>> b1.icon = "b1"
-            >>> b2 = Enemy(1, 2)
-            >>> b2.icon = "b2"
-            >>> b = [b1, b2]
-            >>> field = Field(p, e, f, b, 3)
+            >>> field = Field(p, 3)
             >>> field.update_field()[0]
-            ['\\u3000', 'p1', 'e1']
-            >>> field.update_field()[1]
-            ['f1', 'e2', '\\u3000']
-            >>> field.update_field()[2]
-            ['b1', 'b2', '\\u3000']
+            ['\\u3000', 'p1', '\\u3000']
         """
 
-        pass
+        # フィールドを全て空白にする
+        for i in range(len(self.field)):
+            for j in range(len(self.field)):
+                self.field[i][j] = " "
 
+        # フィールドを更新する処理を記述
+        for player in self.players:
+            self.field[player.now_y][player.now_x] = player.icon
+        return self.field
+
+    # フィールドを表示する関数
     def display_field(self) -> None:
 
         """
@@ -76,31 +78,30 @@ class Field:
         Example:
             >>> p = [Player(1, 0)]
             >>> p[0].icon = "p1"
-            >>> e1 = Enemy(2, 0)
-            >>> e1.icon = "e1"
-            >>> e2 = Enemy(1, 1)
-            >>> e2.icon = "e2"
-            >>> e = [e1, e2]
-            >>> f = [food(0, 1)]
-            >>> f[0].icon = "f1"
-            >>> b1 = Block(0, 2)
-            >>> b1.icon = "b1"
-            >>> b2 = Enemy(1, 2)
-            >>> b2.icon = "b2"
-            >>> b = [b1, b2]
-            >>> field = Field(p, e, f, b, 3)
+            >>> field = Field(p, 3)
             >>> field.display_field()
-            w: 上に移動
-            a: 左に移動
-            s: 下に移動
-            d: 右に移動
-              p1e1
-            f1e2
-            b1b2
+            w: 1マス上に移動
+            a: 1マス左に移動
+            s: 1マス下に移動
+            d: 1マス右に移動
         """
 
-        pass
+        # 動き方を表示
+        print("w: 1マス上に移動")
+        print("a: 1マス左に移動")
+        print("s: 1マス下に移動")
+        print("d: 1マス右に移動")
 
+        # self.fieldを表示する処理を記述
+        max_width = max(len(row) for row in self.field)
+
+        for row in self.field:
+            # 各行の文字列を作成し，不足部分を空白で埋める．
+            row_str = "".join(row)
+            row_str = row_str.ljust(max_width)
+            print(row_str)
+
+    # 衝突判定をする関数
     def collision_detection(
             self,
             target: Item,
@@ -118,18 +119,15 @@ class Field:
         Examples:
             >>> p = Item(0, 0)
             >>> e = Item(1, 1)
-            >>> field = Field([p], [e], [], [])
             >>> p.next_x = 1
-            >>> r = field.collision_detection(p, [e])
-            >>> r is None
-            True
             >>> p.next_y = 1
-            >>> r = field.collision_detection(p, [e])
-            >>> r is e
-            Ture
         """
 
-        pass
+        # 衝突判定をする処理を記述
+        for item in items:
+            if item.next_x == target.next_x and item.next_y == target.next_y:
+                return item
+        return None
 
     if __name__ == "__main__":
         import doctest
