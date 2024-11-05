@@ -39,9 +39,7 @@ class Field:
         self.players = players
 
         # それぞれのアイテムの位置をFieldに更新する関数
-        self.update_field(self)
-
-        pass
+        self.update_field()
 
     def update_field(self) -> list[list[str]]:
 
@@ -96,7 +94,7 @@ class Field:
         max_width = max(len(row) for row in self.field)
 
         for row in self.field:
-            # 各行の文字列を作成し，不足部分を空白で埋める．
+            # 各行の文字列を作成し，不足部分を空白で埋める
             row_str = "".join(row)
             row_str = row_str.ljust(max_width)
             print(row_str)
