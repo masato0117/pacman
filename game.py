@@ -18,14 +18,15 @@ class Game():
         players (list[Player]): プレイヤーのリスト
         field (Field): フィールドのインスタンス
     """
+
     def __init__(self, params: Parameters) -> None:
 
         """Gameクラスの初期化をする関数
 
         Args:
            params (Parameters): configのパラメータのインスタンス
-
         """
+
         self.players = []
         self.field = None
         self.setup(params)  # ゲームの初期設定
