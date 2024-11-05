@@ -54,7 +54,11 @@ class Field:
             >>> p[0].icon = "p1"
             >>> field = Field(p, 3)
             >>> field.update_field()[0]
-            ['\\u3000', 'p1', '\\u3000']
+            [' ', 'p1', ' ']
+            >>> field.update_field()[1]
+            [' ', ' ', ' ']
+            >>> field.update_field()[2]
+            [' ', ' ', ' ']
         """
 
         # フィールドを全て空白にする
@@ -82,6 +86,9 @@ class Field:
             a: 1マス左に移動
             s: 1マス下に移動
             d: 1マス右に移動
+             p1 
+            <BLANKLINE>
+            <BLANKLINE>
         """
 
         # 動き方を表示
