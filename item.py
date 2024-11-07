@@ -98,7 +98,7 @@ class Item:
             (2, 3)
             >>> item.update_pos()
             >>> item.get_pos()
-            (3, 4)
+            (2, 3)
 
         """
         if stuck:

@@ -12,43 +12,33 @@ if TYPE_CHECKING:
     from config import Parameters
 
 
-def get_git_revision():
+def get_git_revision() -> str:
     """
     現在のGitのリビジョンを取得
     Returns:
          str: revision ID
     """
     cmd = "git rev-parse HEAD"
-    if os.path.exists('.git'):  # Gitファイルがあれば
-        revision = subprocess.check_output(cmd.split())
-        # 現在のコードのgitのリビジョンを取得
-        return revision.decode()
-    else:
-        return ''
+    revision = subprocess.check_output(cmd.split())  # 現在のコードのgitのリビジョンを取得
+    return revision.decode()
 
 
 def setup_params(
         args_dict: dict[str, Any],
-        path: str | None = None,
-        ) -> dict[str, Any]:
+        path: str = None) -> dict[str, Any]:
     """
-    コマンドライン引数などの辞書を受け取り，実行時刻，Gitのリビジョン，jsonファイル
-    からの引数と結合した辞書を返す．
+    コマンドライン引数などの辞書を受け取り，実行時刻，Gitのリビジョン，jsonファイルからの引数と結合した辞書を返す．
 
         Args:
             args_dict (dict): argparseのコマンドライン引数などから受け取る辞書
             path (str, optional): パラメータが記述されたjsonファイルのパス
 
         Returns:
-            dict: args_dictと実行時刻，Gitのリビジョン，jsonファイル
-            からの引数が結合された辞書．
-            構造は以下の通り．
-                {
-                    'args': args_dict,
-                    'git_revision': <revision ID>,
-                    'run_date': <実行時刻>,
-                    ...
-                }
+            dict: args_dictと実行時刻，Gitのリビジョン，jsonファイルからの引数が結合された辞書．
+                構造は
+                {'args': args_dict,
+                'git_revision': <revision ID>,
+                'run_date': <実行時刻>, ...}．
     """
     run_date = datetime.now()
     git_revision = get_git_revision()  # Gitのリビジョンを取得
@@ -72,8 +62,7 @@ def dump_params(
     Args:
         params (:ogj: `Parameters`): パラメータを格納したデータクラス
         outdir (str): 出力先のディレクトリ
-        partial (bool, optional): Trueの場合，args，run_date，git_revision
-        を出力しない，
+        partial (bool, optional): Trueの場合，args，run_date，git_revision を出力しない，
     """
     params_dict = asdict(params)  # デフォルトパラメータを取得
     if os.path.exists(f'{outdir}/parameters.json'):
@@ -102,15 +91,12 @@ def set_logging(result_dir: str) -> 'logging.Logger':
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)  # ログレベル
     formatter = logging.Formatter(
-        '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    # ログのフォーマット
-
+        '%(asctime)s - %(name)s - %(levelname)s - %(message)s')  # ログのフォーマット
     # 標準出力へのログ出力設定
     handler = logging.StreamHandler()
     handler.setLevel(logging.INFO)  # 出力ログレベル
     handler.setFormatter(formatter)  # フォーマットを指定
     logger.addHandler(handler)
-
     # ファイル出力へのログ出力設定
     file_handler = logging.FileHandler(f'{result_dir}/log.log', 'w')
     # ログ出力ファイル
