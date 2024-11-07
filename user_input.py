@@ -1,4 +1,4 @@
-from input_without_enetr import InputWithoutEnter
+from input_without_enter import InputWithoutEnter
 
 
 """ユーザからの入力を受け取る
