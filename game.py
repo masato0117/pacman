@@ -68,8 +68,8 @@ class Game():
             # filedの更新
             self.field.update_field()
 
-                # 一定の間隔で処理を繰り返す
-                # 0.3秒待つ
-                time.sleep(0.3)
+            # 一定の間隔で処理を繰り返す
+            # 0.3秒待つ
+            time.sleep(0.3)
 
-                # 終了時のチェック
+            # 終了時のチェック
