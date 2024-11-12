@@ -51,7 +51,7 @@ class Game():
         ゲーム終了条件を満たした場合は終了
 
         Returns:
-        str: ゲームの終了時のメッセージ (例: "Game Over!", "Game Clear!")
+            str: ゲームの終了時のメッセージ (例: "Game Over!", "Game Clear!")
         """
         # ゲームのメインループ
         while True:
@@ -64,8 +64,9 @@ class Game():
                 # キー入力を受け取る
                 key = UserInput.get_user_input()
                 player.get_next_pos(key)
-                # filedの更新
-                self.field.update_field()
+
+            # filedの更新
+            self.field.update_field()
 
                 # 一定の間隔で処理を繰り返す
                 # 0.3秒待つ
