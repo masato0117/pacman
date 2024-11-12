@@ -46,27 +46,27 @@ class Game():
             self.players,
             f_size)
 
+    def start(self) -> str:
+        """ゲームのメインループ
+        ゲームのメインループを実行するメソッド
+        キー入力を受け取る、プレイヤーと敵の移動、フィールド更新
+        ゲーム終了条件を満たした場合は終了
 
-def start(self) -> str:
-    """ゲームのメインループ
-    ゲームのメインループを実行するメソッド
-    キー入力を受け取る、プレイヤーと敵の移動、フィールド更新
-    ゲーム終了条件を満たした場合は終了
+        Returns:
+            str: ゲームの終了時のメッセージ (例: "Game Over!", "Game Clear!")
+        """
+        # ゲームのメインループ
+        while True:
+            #  フィールドの表示
+            os.system("cls" if os.name == "nt" else "clear")  # ターミナルのクリア
+            self.field.display_field()
 
-    Returns:
-       str: ゲームの終了時のメッセージ (例: "Game Over!", "Game Clear!")
-    """
-    # ゲームのメインループ
-    while True:
-        #  フィールドの表示
-        os.system("cls" if os.name == "nt" else "clear")  # ターミナルのクリア
-        self.field.display_field()
+            # プレイヤーの移動を決定
+            for player in self.players:
+                # キー入力を受け取る
+                key = UserInput.get_user_input()
+                player.get_next_pos(key)
 
-        # プレイヤーの移動を決定
-        for player in self.players:
-            # キー入力を受け取る
-            key = UserInput.get_user_input()
-            player.get_next_pos(key)
             # filedの更新
             self.field.update_field()
 
