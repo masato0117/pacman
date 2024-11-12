@@ -21,7 +21,7 @@ class Field:
     def __init__(
             self,
             players: list[Player],
-            f_size: int = 6) -> None:
+            f_size: int = 6):
 
         """
         Fieldクラスの初期化をする関数

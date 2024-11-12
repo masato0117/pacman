@@ -16,7 +16,7 @@ class UserInput:
            tuple[int, int]:x, y座標の差分（例:（1, 0）、(-1, 0)、(0, 1)、(0, -1)など）
         """
         # キー入力
-        key = InputWithoutEnter.input_without_eneter()
+        key = InputWithoutEnter.input_without_enter()
         # 入力されたキーに対応する座標差分を返す
         if key == "w":
             return (0, 1)
