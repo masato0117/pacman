@@ -1,7 +1,7 @@
 import time
 from player import Player
 from field import Field
-from user_input import UserInput
+from input_without_enter import InputWithoutEnter as Input
 from config import Parameters
 import logging
 import os
@@ -62,7 +62,7 @@ class Game():
             # プレイヤーの移動を決定
             for player in self.players:
                 # キー入力を受け取る
-                key = UserInput.get_user_input()
+                key = Input.get_user_input()
                 player.get_next_pos(key)
 
             # filedの更新
