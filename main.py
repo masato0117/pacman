@@ -4,6 +4,7 @@ from config import common_args, Parameters
 from utils import dump_params, setup_params
 from utils import set_logging
 import logging
+from game import Game
 
 
 def main() -> None:
@@ -29,11 +30,13 @@ def main() -> None:
     # 使用例
     logger.info('parameters: ')
     logger.info(params)
-    logger.info(params.param1)  # params変数は各パラメータにドットアクセスが可能．
-    logger.info(params.args['arg1'])  # コマンドライン引数はargs['']でアクセス．
+    logger.info(params.field_size)  # params変数は各パラメータにドットアクセスが可能．
+    # logger.info(params.args['arg1'])  # コマンドライン引数はargs['']でアクセス．
 
     # do something...
     logger.info('Process terminated successfully. ')
+
+    Game.start()
 
 
 if __name__ == "__main__":
