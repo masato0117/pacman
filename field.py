@@ -61,10 +61,17 @@ class Field:
             [' ', ' ', ' ']
         """
 
+        # フィールドの最大サイズを保存
+        max_size = len(self.field)
         # フィールドを全て空白にする
-        for i in range(len(self.field)):
-            for j in range(len(self.field)):
-                self.field[i][j] = " "
+        for i in range(max_size):
+            for j in range(max_size):
+                if i == max_size or j == 0:
+                    self.filed[i][j] = "y"
+                elif i == 0 or i == max_size:
+                    self.filed[i][j] = "x"
+                else:
+                    self.field[i][j] = " "
 
         # フィールドを更新する処理を記述
         for player in self.players:
