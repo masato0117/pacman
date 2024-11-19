@@ -66,12 +66,12 @@ class Field:
         # フィールドを全て空白にする
         for i in range(max_size):
             for j in range(max_size):
-                if i == max_size or j == 0:
-                    self.filed[i][j] = "y"
-                elif i == 0 or i == max_size:
-                    self.filed[i][j] = "x"
+                if i == 0 or i == max_size - 1:
+                    self.field[i][j] = "ー"
+                elif j == 0 or j == max_size - 1:
+                    self.field[i][j] = "｜"
                 else:
-                    self.field[i][j] = " "
+                    self.field[i][j] = "　"
 
         # フィールドを更新する処理を記述
         for player in self.players:
