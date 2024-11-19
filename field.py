@@ -34,7 +34,7 @@ class Field:
             field_size (int): フィールドサイズ
         """
 
-        self.field_size = f_size
+        self.f_size = f_size
         self.field = [[" " for _ in range(f_size)] for _ in range(f_size)]
         self.players = players
 
@@ -68,7 +68,8 @@ class Field:
 
         # フィールドを更新する処理を記述
         for player in self.players:
-            self.field[player.now_y][player.now_x] = player.icon
+            if player.status:
+                self.field[player.now_y][player.now_x] = player.icon
         return self.field
 
     # フィールドを表示する関数

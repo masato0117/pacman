@@ -31,12 +31,11 @@ def main() -> None:
     logger.info('parameters: ')
     logger.info(params)
     logger.info(params.field_size)  # params変数は各パラメータにドットアクセスが可能．
-    # logger.info(params.args['arg1'])  # コマンドライン引数はargs['']でアクセス．
 
     # do something...
     logger.info('Process terminated successfully. ')
 
-    Game.start()
+    Game(params)
 
 
 if __name__ == "__main__":
