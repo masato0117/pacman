@@ -1,10 +1,9 @@
 # Pacman Project
 
-プロジェクトの概要をここに記載します．
-このREADMEは雛形ですので，適宜修正してください．
+問題解決型実践演習の課題としてコマンドラインで動くパックマンゲームの作成
 
 ## Requirement
-- Python 3.9
+- Python 3.10.12
 
 
 ## Installation
@@ -20,7 +19,7 @@ pip install -r requirements.txt
 
 ## Usage
 - メインプログラムを実行．
-  - `result/[日付][実行時刻]/` 下に実行結果とログが出力されます．
+  - 出力されるマップ上のPlayerを動かhしたい方向に(W,A,S,Dキー)を入力する。
 ```shell
 python main.py
 ```
@@ -57,6 +56,9 @@ python main.py -h
 .
 ├── config.py           # パラメータ定義
 ├── main.py             # 実行ファイル
+├── item.py
+├── player.py
+├── test_user_input.py
 ├── parameters.json     # パラメータ指定用ファイル
 ├── result              # 結果出力ディレクトリ
 │   └── 20211026_165841
