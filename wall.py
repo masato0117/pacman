@@ -1,10 +1,10 @@
 from item import Item
 
 
-class Block(Item):
+class Wall(Item):
     """
-    Blockクラス
-    アイテムの位置とアイコンを管理するクラス
+    Wallクラス
+    壁の位置とアイコンを管理するクラス
 
     Attributes:
         x (int): x座標
@@ -12,14 +12,14 @@ class Block(Item):
         icon (str): 表示アイコン
 
     Examples:
-        >>> block = Block(3, 3)
-        >>> block.now_x
+        >>> wall = Wall(3, 3)
+        >>> wall.now_x
         3
-        >>> block.now_y
+        >>> wall.now_y
         3
-        >>> block.icon
+        >>> wall.icon
         '⚪'
-        >>> isinstance(block, Item)
+        >>> isinstance(wall, Item)
         True
     """
 

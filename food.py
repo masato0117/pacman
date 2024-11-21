@@ -1,10 +1,10 @@
 from item import Item
 
 
-class Block(Item):
+class Food(Item):
     """
-    Blockクラス
-    アイテムの位置とアイコンを管理するクラス
+    Foodクラス
+    回復アイテムの位置とアイコンを管理するクラス
 
     Attributes:
         x (int): x座標
@@ -12,20 +12,20 @@ class Block(Item):
         icon (str): 表示アイコン
 
     Examples:
-        >>> block = Block(3, 3)
-        >>> block.now_x
+        >>> food = Food(3, 3)
+        >>> food.now_x
         3
-        >>> block.now_y
+        >>> food.now_y
         3
-        >>> block.icon
-        '⚪'
-        >>> isinstance(block, Item)
+        >>> food.icon
+        '🍒'
+        >>> isinstance(food, Item)
         True
     """
 
     def __init__(self, x, y) -> None:
         super().__init__(x, y)
-        self.icon = "⚪"
+        self.icon = "🍒"
 
 
 if __name__ == "__main__":

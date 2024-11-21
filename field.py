@@ -1,5 +1,9 @@
 from item import Item
 from player import Player
+from wall import Wall
+from block import Block
+from enemy import Enemy
+from food import Food
 
 
 class Field:
@@ -10,9 +14,9 @@ class Field:
 
     Attributes:
         players (list[Player]): プレイヤー情報
-        enemies (list[Enemy]): 敵の情報
-        foods (list[Food]): アイテム情報
         blocks (list[Block]): アイテムのリスト
+        enemies (list[Enemy]): 敵の情報
+        weapons (list[Weapon]): 武器情報
         fields (list[list[str]]): フィールド情報
         field_size (int): フィールドサイズ
     """
@@ -21,6 +25,10 @@ class Field:
     def __init__(
             self,
             players: list[Player],
+            walls: list[Wall],
+            blocks: list[Block],
+            enemies: list[Enemy],
+            foods: list[Food],
             f_size: int = 6):
 
         """
@@ -28,15 +36,20 @@ class Field:
 
         Args:
             players (list[Player]): プレイヤー情報
+            walls (list[Wall]): 壁のリスト
+            blocks (list[Block]): 障害物のリスト
             enemies (list[Enemy]): 敵の情報
-            foods (list[Food]): アイテム情報
-            blocks (list[Block]): ブロックのリスト
+            weapons (list[weapon]): 武器情報
             field_size (int): フィールドサイズ
         """
 
         self.f_size = f_size
         self.field = [[" " for _ in range(f_size)] for _ in range(f_size)]
         self.players = players
+        self.walls = walls
+        self.blocks = blocks
+        self.enemies = enemies
+        self.foods = foods
 
         # それぞれのアイテムの位置をFieldに更新する関数
         self.update_field()
@@ -52,13 +65,25 @@ class Field:
         Examples:
             >>> p = [Player(1, 0)]
             >>> p[0].icon = "p1"
-            >>> field = Field(p, 3)
+            >>> b1 = Block(0, 2)
+            >>> b1.icon = "b1"
+            >>> b2 = Block(1, 2)
+            >>> b2.icon = "b2"
+            >>> b = [b1, b2]
+            >>> e1 = Enemy(2, 0)
+            >>> e1.icon = "e1"
+            >>> e2 = Enemy(1, 1)
+            >>> e2.icon = "e2"
+            >>> e = [e1, e2]
+            >>> w = [Weapon(0, 1)]
+            >>> w[0].icon = "w1"
+            >>> field = Field(p, b, w, e, w, 3)
             >>> field.update_field()[0]
-            [' ', 'p1', ' ']
+            ['\\u3000', 'p1', 'e1']
             >>> field.update_field()[1]
-            [' ', ' ', ' ']
+            ['w1', 'e2', '\\u3000']
             >>> field.update_field()[2]
-            [' ', ' ', ' ']
+            ['b1', 'b2', '\\u3000']
         """
 
         # フィールドの最大サイズを保存
@@ -66,17 +91,23 @@ class Field:
         # フィールドを全て空白にする
         for i in range(max_size):
             for j in range(max_size):
-                if i == 0 or i == max_size - 1:
-                    self.field[i][j] = "ー"
-                elif j == 0 or j == max_size - 1:
-                    self.field[i][j] = "｜"
-                else:
-                    self.field[i][j] = "　"
-
+                self.field[i][j] = "　"
         # フィールドを更新する処理を記述
         for player in self.players:
             if player.status:
                 self.field[player.now_y][player.now_x] = player.icon
+        for wall in self.walls:
+            if wall.status:
+                self.field[wall.now_y][wall.now_x] = wall.icon
+        for block in self.blocks:
+            if block.status:
+                self.field[block.now_y][block.now_x] = block.icon
+        for enemy in self.enemies:
+            if enemy.status:
+                self.field[enemy.now_y][enemy.now_x] = enemy.icon
+        for food in self.foods:
+            if food.status:
+                self.field[food.now_y][food.now_x] = food.icon
         return self.field
 
     # フィールドを表示する関数
@@ -88,15 +119,27 @@ class Field:
         Example:
             >>> p = [Player(1, 0)]
             >>> p[0].icon = "p1"
-            >>> field = Field(p, 3)
+            >>> e1 = Enemy(2, 0)
+            >>> e1.icon = "e1"
+            >>> e2 = Enemy(1, 1)
+            >>> e2.icon = "e2"
+            >>> e = [e1, e2]
+            >>> z = [Weapon(0, 1)]
+            >>> w[0].icon = "w1"
+            >>> b1 = Block(0, 2)
+            >>> b1.icon = "b1"
+            >>> b2 = Block(1, 2)
+            >>> b2.icon = "b2"
+            >>> b = [b1, b2]
+            >>> field = Field(p, b, w, e, w, 3)
             >>> field.display_field()
             w: 1マス上に移動
             a: 1マス左に移動
             s: 1マス下に移動
             d: 1マス右に移動
-             p1 
-            <BLANKLINE>
-            <BLANKLINE>
+            　p1e1
+            w1e2　
+            w1w2　
         """
 
         # 動き方を表示
@@ -115,7 +158,7 @@ class Field:
             print(row_str)
 
     # 衝突判定をする関数
-    def collision_detection(
+    def collision(
             self,
             target: Item,
             items: list[Item]) -> Item | None:
@@ -141,6 +184,23 @@ class Field:
             if item.next_x == target.next_x and item.next_y == target.next_y:
                 return item
         return None
+
+    def post_collision_processing(
+            self,
+            items: list[Item],
+            n: int = 1) -> None:
+        for item in items:
+            # 障害物と壁との衝突判定
+            collided_block = self.collision(item, list(self.blocks))
+            collided_wall = self.collision(item, list(self.walls))
+            if collided_wall and n == 1:
+                item.update_teleportate_pos(int(len(self.field)))
+            elif collided_block and n == 2:
+                item.update_pos()
+            elif collided_wall and n == 2 or collided_block and n == 1:
+                item.update_pos(stuck=True)
+            else:
+                item.update_pos()
 
     if __name__ == "__main__":
         import doctest
