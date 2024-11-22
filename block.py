@@ -18,14 +18,14 @@ class Block(Item):
         >>> block.now_y
         3
         >>> block.icon
-        '⚪'
+        '🗻'
         >>> isinstance(block, Item)
         True
     """
 
     def __init__(self, x, y) -> None:
         super().__init__(x, y)
-        self.icon = "⚪"
+        self.icon = "🗻"
 
 
 if __name__ == "__main__":

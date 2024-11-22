@@ -195,12 +195,14 @@ class Field:
             collided_wall = self.collision(item, list(self.walls))
             if collided_wall and n == 1:
                 item.update_teleportate_pos(int(len(self.field)))
+                self.post_collision_processing(list(items), 1)
             elif collided_block and n == 2:
                 item.update_pos()
             elif collided_wall and n == 2 or collided_block and n == 1:
                 item.update_pos(stuck=True)
             else:
                 item.update_pos()
+        return
 
     if __name__ == "__main__":
         import doctest

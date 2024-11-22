@@ -49,6 +49,7 @@ class Game():
         """
         f_size = params.field_size  # フィールドのサイズ
         e_num = params.enemy_num
+        f_num = params.food_num
         # フィールドの初期化
         self.players = [Player(1, 1)]
         self.enemies = [
@@ -56,7 +57,7 @@ class Game():
             for _ in range(e_num)]
         self.foods = [
             Food(random(1, f_size - 2), random(1, f_size - 2))
-            for _ in range(e_num)]
+            for _ in range(f_num)]
         # フィールドの周りを壁とするBlockインスタンスを生成
         if f_size < 4:
             raise ValueError("field_size must be greater than 4")

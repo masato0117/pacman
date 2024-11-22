@@ -112,9 +112,9 @@ class Item:
     def update_teleportate_pos(
             self,
             max_size: int = 6) -> None:
+
         horizontal_parameter: int = self.next_x - self.now_x
         vertical_parameter: int = self.next_y - self.now_y
-        
         if horizontal_parameter > 0:
             self.next_x = 1
             self.next_y = self.now_y
@@ -127,9 +127,6 @@ class Item:
         else:
             self.next_x = self.now_x
             self.next_y = max_size - 2
-
-        self.now_x = self.next_x
-        self.now_y = self.next_y
         return
 
 

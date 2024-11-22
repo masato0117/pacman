@@ -28,8 +28,8 @@ class Parameters:
     git_revision: str = ''  # 実行時のプログラムのGitのバージョン
 
     field_size: int = 20  # フィールドサイズの一片を定義する
-    enemy_num: int = 1  # 敵の数
-    weapon_num: int = 1  # 食べ物の数
+    enemy_num: int = 20  # 敵の数
+    food_num: int = 1  # 食べ物の数
     # param2: dict = field(default_factory=lambda: {'k1': 'v1', 'k2': 'v2'})
     # リストや辞書で与える例
 
