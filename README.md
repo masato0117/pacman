@@ -42,7 +42,9 @@ python main.py -h
 - 指定できるパラメータは以下の通り．
 ```json
 {
-    "param": 10,    # 画面サイズ
+    "field_size": 10,    # 画面サイズの一辺
+    "enemy_num": 20,     # エネミーの個数
+    "item_num": 1        # アイテムの個数
 }
 ```
 
@@ -57,6 +59,7 @@ python main.py -h
 ├── player.py
 ├── enemy.py
 ├── food.py
+├── weapon.py
 ├── block.py
 ├── wall.py
 ├── field.py

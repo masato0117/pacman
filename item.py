@@ -112,6 +112,23 @@ class Item:
     def update_teleportate_pos(
             self,
             max_size: int = 6) -> None:
+        """
+        壁に衝突したら右端と左端,上端と下端を繋げて移動する
+
+        Args:
+            max_size: 座標最大値
+
+        Returns:
+            None
+
+        Examples:
+            >>>self.next_x = 0
+            >>>self.now_x = 1
+            >>>self.next_y = 1
+            >>>self.now = 1
+            >>>Item.update_pos()
+            (18, 1)
+        """
 
         horizontal_parameter: int = self.next_x - self.now_x
         vertical_parameter: int = self.next_y - self.now_y
@@ -127,7 +144,7 @@ class Item:
         else:
             self.next_x = self.now_x
             self.next_y = max_size - 2
-        return
+        return None
 
 
 if __name__ == "__main__":

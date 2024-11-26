@@ -189,6 +189,23 @@ class Field:
             self,
             items: list[Item],
             n: int = 1) -> None:
+        """
+        障害物と壁との衝突判定
+        Args:
+        items (list[Item]): アイテム
+        n (int): collusion結果
+
+        Examples:
+            >>> blocks = Item(0, 0)
+            >>> p = Item(1, 1)
+            >>> p.next_x = 1
+            >>> p.next_y = 1
+            >>> walls = Item(0, 1)
+            >>> e = Item(0, 1)
+            >>> e.next_x = 18
+            >>> e.next_y = 1
+
+        """
         for item in items:
             # 障害物と壁との衝突判定
             collided_block = self.collision(item, list(self.blocks))
@@ -202,7 +219,7 @@ class Field:
                 item.update_pos(stuck=True)
             else:
                 item.update_pos()
-        return
+        return None
 
     if __name__ == "__main__":
         import doctest
