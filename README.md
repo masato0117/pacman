@@ -42,11 +42,7 @@ python main.py -h
 - 指定できるパラメータは以下の通り．
 ```json
 {
-    "param1": 0,    # ダミーのパラメータ1
-    "param2": {     # ダミーのパラメータ2
-        "k1": "v1",
-        "k2": "v2"
-    }
+    "param": 10,    # 画面サイズ
 }
 ```
 
@@ -56,9 +52,15 @@ python main.py -h
 .
 ├── config.py           # パラメータ定義
 ├── main.py             # 実行ファイル
+├── game.py
 ├── item.py
 ├── player.py
-├── test_user_input.py
+├── enemy.py
+├── food.py
+├── block.py
+├── wall.py
+├── field.py
+├── input_without_enter.py
 ├── parameters.json     # パラメータ指定用ファイル
 ├── result              # 結果出力ディレクトリ
 │   └── 20211026_165841
