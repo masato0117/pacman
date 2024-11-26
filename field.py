@@ -75,13 +75,13 @@ class Field:
             >>> e2 = Enemy(1, 1)
             >>> e2.icon = "e2"
             >>> e = [e1, e2]
-            >>> w = [Weapon(0, 1)]
-            >>> w[0].icon = "w1"
-            >>> field = Field(p, b, w, e, w, 3)
+            >>> f = [Food(0, 1)]
+            >>> f[0].icon = "f1"
+            >>> field = Field(p, w, b, e, f, 3)
             >>> field.update_field()[0]
             ['\\u3000', 'p1', 'e1']
             >>> field.update_field()[1]
-            ['w1', 'e2', '\\u3000']
+            ['f1', 'e2', '\\u3000']
             >>> field.update_field()[2]
             ['b1', 'b2', '\\u3000']
         """
@@ -124,22 +124,22 @@ class Field:
             >>> e2 = Enemy(1, 1)
             >>> e2.icon = "e2"
             >>> e = [e1, e2]
-            >>> z = [Weapon(0, 1)]
+            >>> f1 = [Food(0, 1)]
             >>> w[0].icon = "w1"
             >>> b1 = Block(0, 2)
             >>> b1.icon = "b1"
             >>> b2 = Block(1, 2)
             >>> b2.icon = "b2"
             >>> b = [b1, b2]
-            >>> field = Field(p, b, w, e, w, 3)
+            >>> field = Field(p, w, b, e, f, 3)
             >>> field.display_field()
             w: 1マス上に移動
             a: 1マス左に移動
             s: 1マス下に移動
             d: 1マス右に移動
             　p1e1
-            w1e2　
-            w1w2　
+            f1e2　
+            b1b2　
         """
 
         # 動き方を表示
@@ -185,36 +185,41 @@ class Field:
                 return item
         return None
 
+    # 特別な衝突処理をする関数
     def post_collision_processing(
             self,
             items: list[Item],
-            n: int = 1) -> None:
+            n: int = 1,
+            collision_count: int = 0) -> None:
         """
-        障害物と壁との衝突判定
-        Args:
-        items (list[Item]): アイテム
-        n (int): collusion結果
+        プレイヤー，敵，物体の位置が重なっているか判定する関数
+            Args:
+            items (list[Item]): アイテム
+            n (int = 1): プレイヤーか敵のどちらが呼び出されたかを判別
+            collision_count (int = 0): この関数が呼び出された回数
+
+        Returns:
+            None
 
         Examples:
-            >>> blocks = Item(0, 0)
-            >>> p = Item(1, 1)
-            >>> p.next_x = 1
-            >>> p.next_y = 1
-            >>> walls = Item(0, 1)
-            >>> e = Item(0, 1)
-            >>> e.next_x = 18
-            >>> e.next_y = 1
 
         """
         for item in items:
-            # 障害物と壁との衝突判定
+            # 障害物，壁との衝突判定
             collided_block = self.collision(item, list(self.blocks))
             collided_wall = self.collision(item, list(self.walls))
             if collided_wall and n == 1:
-                item.update_teleportate_pos(int(len(self.field)))
-                self.post_collision_processing(list(items), 1)
+                item.update_special_pos(int(len(self.field)), n)
+                self.post_collision_processing(list(items), n)
             elif collided_block and n == 2:
-                item.update_pos()
+                if collision_count > 0:
+                    item.update_pos(stuck=True)
+                else:
+                    collision_count = collision_count + 1
+                    item.update_special_pos(int(len(self.field)), n)
+                    self.post_collision_processing(list(items),
+                                                   n,
+                                                   collision_count)
             elif collided_wall and n == 2 or collided_block and n == 1:
                 item.update_pos(stuck=True)
             else:

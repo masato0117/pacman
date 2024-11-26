@@ -48,17 +48,22 @@ class Game():
            Params (Parameters): configのパラメータのインスタンス
         """
         f_size = params.field_size  # フィールドのサイズ
-        e_num = params.enemy_num
-        f_num = params.food_num
+        e_num = params.enemy_num  # 敵の数
+        f_num = params.food_num  # 食べ物の数
+        not_blank_space = []  # 空白ではない数
         # フィールドの初期化
-        self.players = [Player(1, 1)]
+        self.players = [
+            Player(random(1, f_size - 2), random(1, f_size - 2))
+            for _ in range(1)]
+        # 敵をフィールド内に生成する
         self.enemies = [
             Enemy(random(1, f_size - 2), random(1, f_size - 2))
             for _ in range(e_num)]
+        # 食べ物をフィールド内に生成する
         self.foods = [
             Food(random(1, f_size - 2), random(1, f_size - 2))
             for _ in range(f_num)]
-        # フィールドの周りを壁とするBlockインスタンスを生成
+        # フィールドの周りを壁とするwallインスタンスを生成
         if f_size < 4:
             raise ValueError("field_size must be greater than 4")
         self.walls = [
@@ -67,12 +72,25 @@ class Game():
             for y in range(f_size)
             if x == 0 or x == f_size - 1 or y == 0 or y == f_size - 1
         ]
+        # 障害物をフィールド内に生成する
         self.blocks = [
             Block(x, y)
             for x in range(1, f_size - 2)
             for y in range(1, f_size - 2)
             if x == random(1, f_size - 2) or y == random(1, f_size - 2)
         ]
+        # 空白の位置とアイテムがある位置の識別
+        for item in self.players + self.enemies + self.foods + self.blocks:
+            print(item)
+            if item not in not_blank_space:
+                not_blank_space.append(item)
+            else:
+                while True:
+                    item = (random(1, f_size - 2), random(1, f_size - 2))
+                    if item not in not_blank_space:
+                        not_blank_space.append(item)
+                        break
+
         self.field = Field(
             self.players,
             self.walls,
