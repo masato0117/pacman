@@ -1,10 +1,10 @@
 """親クラス
-block,player,enemy,foodの親クラス
+block,player,enemy,weaponの親クラス
 """
 
 
 class Item:
-    """block,player,enemy,foodの親クラス
+    """block,player,enemy,weaponの親クラス
 
     Attributes:
        now_x(int) : 現在のx座標
@@ -104,10 +104,32 @@ class Item:
         if stuck:
             self.next_x = self.now_x
             self.next_y = self.now_y
+            return
+
+        self.now_x = self.next_x
+        self.now_y = self.next_y
+
+    def update_teleportate_pos(
+            self,
+            max_size: int = 6) -> None:
+
+        horizontal_parameter: int = self.next_x - self.now_x
+        vertical_parameter: int = self.next_y - self.now_y
+        if horizontal_parameter > 0:
+            self.next_x = 1
+            self.next_y = self.now_y
+        elif horizontal_parameter < 0:
+            self.next_x = max_size - 2
+            self.next_y = self.now_y
+        elif vertical_parameter > 0:
+            self.next_x = self.now_x
+            self.next_y = 1
         else:
             self.next_x = self.now_x
-            self.next_y = self.now_y
+            self.next_y = max_size - 2
+        return
 
-    if __name__ == "__main__":
-        import doctest
-        doctest.testmod()
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()

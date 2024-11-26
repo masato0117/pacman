@@ -31,7 +31,8 @@ def main() -> None:
     logger.info('parameters: ')
     logger.info(params)
     logger.info(params.field_size)  # params変数は各パラメータにドットアクセスが可能．
-
+    logger.info(params.enemy_num)  # params変数は各パラメータにドットアクセスが可能．
+    logger.info(params.food_num)  # params変数は各パラメータにドットアクセスが可能．
     # do something...
     logger.info('Process terminated successfully. ')
 
