@@ -50,8 +50,6 @@ class Game():
         f_size = params.field_size  # フィールドのサイズ
         e_num = params.enemy_num  # 敵の数
         f_num = params.food_num  # 食べ物の数
-        blank_space = []  # 空白の数
-        not_blank_space = []  # 空白ではない数
         # フィールドの初期化
         self.players = [
             Player(random(1, f_size - 2), random(1, f_size - 2))
@@ -80,13 +78,6 @@ class Game():
             for y in range(1, f_size - 2)
             if x == random(1, f_size - 2) or y == random(1, f_size - 2)
         ]
-        # 空白の位置とアイテムがある位置の識別
-        for item in self.players + self.enemies + self.foods + self.enemies:
-            for i in range(len(not_blank_space) + 1):
-                if i == item:
-                    blank_space.append(item)
-                else:
-                    not_blank_space.append(item)
 
         self.field = Field(
             self.players,
