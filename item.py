@@ -98,7 +98,7 @@ class Item:
             (2, 3)
             >>> item.update_pos()
             >>> item.get_pos()
-            (2, 3)
+            (3, 4)
 
         """
         if stuck:
@@ -109,24 +109,46 @@ class Item:
         self.now_x = self.next_x
         self.now_y = self.next_y
 
-    def update_teleportate_pos(
+    def update_special_pos(
             self,
-            max_size: int = 6) -> None:
+            max_size: int = 6,
+            n: int = 1) -> None:
+        """
+        座標を特別な位置に更新するメソッド
+        フィールドサイズを引数に取り，プレイヤーと敵を特別な座標を更新する.
 
+        Args:
+            max_size (int = 6): フィールドサイズを取得
+            n (int = 1): プレイヤーか敵かの識別
+        Returns:
+            None
+
+        Examples:
+
+        """
+
+        # 縦軸，横軸移動の検出
         horizontal_parameter: int = self.next_x - self.now_x
         vertical_parameter: int = self.next_y - self.now_y
-        if horizontal_parameter > 0:
-            self.next_x = 1
-            self.next_y = self.now_y
-        elif horizontal_parameter < 0:
-            self.next_x = max_size - 2
-            self.next_y = self.now_y
-        elif vertical_parameter > 0:
-            self.next_x = self.now_x
-            self.next_y = 1
-        else:
-            self.next_x = self.now_x
-            self.next_y = max_size - 2
+
+        # プレイヤーの場合以下の処理をする
+        if n == 1:
+            if horizontal_parameter > 0:
+                self.next_x = 1
+                self.next_y = self.now_y
+            elif horizontal_parameter < 0:
+                self.next_x = max_size - 2
+                self.next_y = self.now_y
+            elif vertical_parameter > 0:
+                self.next_x = self.now_x
+                self.next_y = 1
+            else:
+                self.next_x = self.now_x
+                self.next_y = max_size - 2
+        # 敵の場合以下の処理をする
+        if n == 2:
+            self.next_x = self.now_x + horizontal_parameter * 2
+            self.next_y = self.now_y + vertical_parameter * 2
         return
 
 
