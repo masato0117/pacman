@@ -65,6 +65,8 @@ class Field:
         Examples:
             >>> p = [Player(1, 0)]
             >>> p[0].icon = "p1"
+            >>> w = [Wall(0, 0)]
+            >>> w[0].icon = "w1"
             >>> b1 = Block(0, 2)
             >>> b1.icon = "b1"
             >>> b2 = Block(1, 2)
@@ -79,7 +81,7 @@ class Field:
             >>> f[0].icon = "f1"
             >>> field = Field(p, w, b, e, f, 3)
             >>> field.update_field()[0]
-            ['\\u3000', 'p1', 'e1']
+            ['w1', 'p1', 'e1']
             >>> field.update_field()[1]
             ['f1', 'e2', '\\u3000']
             >>> field.update_field()[2]
@@ -119,25 +121,27 @@ class Field:
         Example:
             >>> p = [Player(1, 0)]
             >>> p[0].icon = "p1"
-            >>> e1 = Enemy(2, 0)
-            >>> e1.icon = "e1"
-            >>> e2 = Enemy(1, 1)
-            >>> e2.icon = "e2"
-            >>> e = [e1, e2]
-            >>> f1 = [Food(0, 1)]
+            >>> w = [Wall(0, 0)]
             >>> w[0].icon = "w1"
             >>> b1 = Block(0, 2)
             >>> b1.icon = "b1"
             >>> b2 = Block(1, 2)
             >>> b2.icon = "b2"
             >>> b = [b1, b2]
+            >>> e1 = Enemy(2, 0)
+            >>> e1.icon = "e1"
+            >>> e2 = Enemy(1, 1)
+            >>> e2.icon = "e2"
+            >>> e = [e1, e2]
+            >>> f = [Food(0, 1)]
+            >>> f[0].icon = "f1"
             >>> field = Field(p, w, b, e, f, 3)
             >>> field.display_field()
             w: 1マス上に移動
             a: 1マス左に移動
             s: 1マス下に移動
             d: 1マス右に移動
-            　p1e1
+            w1p1e1
             f1e2　
             b1b2　
         """
@@ -175,8 +179,15 @@ class Field:
         Examples:
             >>> p = Item(0, 0)
             >>> e = Item(1, 1)
+            >>> field = Field([p], [], [], [e], [])
             >>> p.next_x = 1
+            >>> r = field.collision(p, [e])
+            >>> r is None
+            True
             >>> p.next_y = 1
+            >>> r = field.collision(p, [e])
+            >>> r is e
+            True
         """
 
         # 衝突判定をする処理を記述
@@ -202,6 +213,24 @@ class Field:
             None
 
         Examples:
+            >>> p = Player(1, 1)
+            >>> e = Enemy(1, 2)
+            >>> w1 = Wall(0, 1)
+            >>> w2 = Wall(0, 2)
+            >>> w = [w1, w2]
+            >>> b1 = Block(2, 1)
+            >>> b2 = Block(2, 2)
+            >>> b = [b1, b2]
+            >>> field = Field([p], w, b, [e], [], 6)
+            >>> p.next_x = 2
+            >>> field.post_collision_processing([p], 1)
+            >>> p.now_x == 1
+            True
+            >>> e.next_x = 2
+            >>> field.post_collision_processing([p], 2)
+            >>> e.next_x == 3
+            True
+
 
         """
         for item in items:
