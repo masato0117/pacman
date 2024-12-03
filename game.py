@@ -37,8 +37,9 @@ class Game():
         self.enemies: list[Enemy] = []
         self.foods: list[Food] = []
         self.field = Field([], [], [], [], [], 0)
+        self.clear_count = 0    # ステージクリア数
         self.setup(params)  # ゲームの初期設定
-        self.start()  # ゲームのメインループ
+        self.start(params)  # ゲームのメインループ
 
     def setup(self, params: Parameters) -> None:
         """Gameの初期設定
@@ -99,11 +100,12 @@ class Game():
             self.foods,
             f_size)
 
-    def start(self) -> str:
+    def start(self, params: Parameters) -> str:
         """ゲームのメインループ
         ゲームのメインループを実行するメソッド
         キー入力を受け取る、プレイヤーと敵の移動、フィールド更新
-        ゲーム終了条件を満たした場合は終了
+        アイテムを取るとステージクリア
+        敵と接触するとゲームオーバー、スコア表示（ゲーム終了条件）
 
         Returns:
             str: ゲームの終了時のメッセージ (例: "Game Over!", "Game Clear!")
@@ -137,6 +139,7 @@ class Game():
                     # ターミナルをクリア
                     self.field.display_field()
                     logger.info("Game Over!")
+                    print("Clear Stage:", self.clear_count)
                     return "Game Over!"
 
                 # 食べ物との衝突判定
@@ -149,8 +152,12 @@ class Game():
                         os.system("cls" if os.name == "nt" else "clear")
                         # ターミナルをクリア
                         self.field.display_field()
-                        logger.info("Game Clear!")
-                        return "Game Clear!"
+                        logger.info("Next stage")
+                        # 新しいステージの生成
+                        self.clear_count = self.clear_count + 1
+                        self.next_setup(params)
+                        self.next_game(params)
+                        return "Next stage"
 
             # filedの更新
             self.field.update_field()
@@ -160,3 +167,68 @@ class Game():
             time.sleep(0.3)
 
             # 終了時のチェック
+
+    def next_setup(self, params: Parameters) -> None:
+        """Gameの再初期設定
+        ゲームの設定変更を行うメソッド.
+
+        Args:
+           Params (Parameters): configのパラメータのインスタンス
+        """
+        f_size = params.field_size  # フィールドのサイズ
+        e_num = params.enemy_num + self.clear_count  # 敵の数
+        f_num = params.food_num  # 食べ物の数
+        not_blank_space = []  # 空白ではない数
+        # フィールドの初期化
+        self.players = [
+            Player(random(1, f_size - 2), random(1, f_size - 2))
+            for _ in range(1)]
+        # 敵をフィールド内に生成する
+        self.enemies = [
+            Enemy(random(1, f_size - 2), random(1, f_size - 2))
+            for _ in range(e_num)]
+        # 食べ物をフィールド内に生成する
+        self.foods = [
+            Food(random(1, f_size - 2), random(1, f_size - 2))
+            for _ in range(f_num)]
+        # フィールドの周りを壁とするwallインスタンスを生成
+        if f_size < 4:
+            raise ValueError("field_size must be greater than 4")
+        self.walls = [
+            Wall(x, y)
+            for x in range(f_size)
+            for y in range(f_size)
+            if x == 0 or x == f_size - 1 or y == 0 or y == f_size - 1
+        ]
+        # 障害物をフィールド内に生成する
+        self.blocks = [
+            Block(x, y)
+            for x in range(1, f_size - 2)
+            for y in range(1, f_size - 2)
+            if x == random(1, f_size - 2) or y == random(1, f_size - 2)
+        ]
+        # 空白の位置とアイテムがある位置の識別
+        for item in self.players + self.enemies + self.foods + self.blocks:
+            print(item)
+            if item not in not_blank_space:
+                not_blank_space.append(item)
+            else:
+                while True:
+                    item = (random(1, f_size - 2), random(1, f_size - 2))
+                    if item not in not_blank_space:
+                        not_blank_space.append(item)
+                        break
+
+        self.field = Field(
+            self.players,
+            self.walls,
+            self.blocks,
+            self.enemies,
+            self.foods,
+            f_size)
+
+    def next_game(self, params) -> None:
+        """次のゲームの開始
+            次のゲームを開始する
+        """
+        self.start(params)
