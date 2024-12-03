@@ -99,32 +99,45 @@ class Item:
             >>> item.update_pos()
             >>> item.get_pos()
             (3, 4)
-
         """
+
+        # 衝突したため，移動前の位置に更新
         if stuck:
             self.next_x = self.now_x
             self.next_y = self.now_y
             return
-
+        # 位置の更新
         self.now_x = self.next_x
         self.now_y = self.next_y
 
     def update_special_pos(
             self,
             max_size: int = 6,
-            n: int = 1) -> None:
+            kind: int = 1) -> None:
         """
         座標を特別な位置に更新するメソッド
         フィールドサイズを引数に取り，プレイヤーと敵を特別な座標を更新する.
 
         Args:
             max_size (int = 6): フィールドサイズを取得
-            n (int = 1): プレイヤーか敵かの識別
+            kind (int = 1): プレイヤーか敵かの識別
         Returns:
             None
 
         Examples:
-
+            >>> item = Item(4, 3)
+            >>> item.next_x = 5
+            >>> item.get_pos()
+            (4, 3)
+            >>> item.update_special_pos(6, 1)
+            >>> item.update_pos()
+            >>> item.get_pos()
+            (1, 3)
+            >>> item.next_x = 2
+            >>> item.update_special_pos(6, 2)
+            >>> item.update_pos()
+            >>> item.get_pos()
+            (3, 3)
         """
 
         # 縦軸，横軸移動の検出
@@ -132,7 +145,7 @@ class Item:
         vertical_parameter: int = self.next_y - self.now_y
 
         # プレイヤーの場合以下の処理をする
-        if n == 1:
+        if kind == 1:
             if horizontal_parameter > 0:
                 self.next_x = 1
                 self.next_y = self.now_y
@@ -146,7 +159,7 @@ class Item:
                 self.next_x = self.now_x
                 self.next_y = max_size - 2
         # 敵の場合以下の処理をする
-        if n == 2:
+        if kind == 2:
             self.next_x = self.now_x + horizontal_parameter * 2
             self.next_y = self.now_y + vertical_parameter * 2
         return
