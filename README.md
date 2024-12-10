@@ -43,7 +43,7 @@ python main.py -h
 ```json
 {
     "field_size": 10,    # 画面サイズの一辺
-    "enemy_num": 20,     # エネミーの個数
+    "enemy_num": 10,     # エネミーの個数
     "item_num": 1        # アイテムの個数
 }
 ```
@@ -59,7 +59,6 @@ python main.py -h
 ├── player.py
 ├── enemy.py
 ├── food.py
-├── weapon.py
 ├── block.py
 ├── wall.py
 ├── field.py
