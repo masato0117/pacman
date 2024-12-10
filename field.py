@@ -200,13 +200,13 @@ class Field:
     def post_collision_processing(
             self,
             items: list[Item],
-            n: int = 1,
+            kind: int = 1,
             collision_count: int = 0) -> None:
         """
         プレイヤー，敵，物体の位置が重なっているか判定する関数
             Args:
             items (list[Item]): アイテム
-            n (int = 1): プレイヤーか敵のどちらが呼び出されたかを判別
+            kind (int = 1): プレイヤーか敵のどちらが呼び出されたかを判別
             collision_count (int = 0): この関数が呼び出された回数
 
         Returns:
@@ -226,31 +226,44 @@ class Field:
             >>> field.post_collision_processing([p], 1)
             >>> p.now_x == 1
             True
+            >>> p.next_x = 0
+            >>> field.post_collision_processing([p], 1)
+            >>> p.now_x == 4
+            True
+            >>> e.next_x = 0
+            >>> field.post_collision_processing([e], 2)
+            >>> e.next_x == 1
+            True
             >>> e.next_x = 2
-            >>> field.post_collision_processing([p], 2)
+            >>> field.post_collision_processing([e], 2)
             >>> e.next_x == 3
             True
-
-
         """
+
         for item in items:
             # 障害物，壁との衝突判定
             collided_block = self.collision(item, list(self.blocks))
             collided_wall = self.collision(item, list(self.walls))
-            if collided_wall and n == 1:
-                item.update_special_pos(int(len(self.field)), n)
-                self.post_collision_processing(list(items), n)
-            elif collided_block and n == 2:
+            # プレイヤーが壁に衝突した場合
+            if collided_wall and kind == 1:
+                item.update_special_pos(int(len(self.field)), kind)
+                self.post_collision_processing(list(items), kind)
+            # 敵が障害物に衝突した場合
+            elif collided_block and kind == 2:
+                # 複数回衝突した場合
                 if collision_count > 0:
                     item.update_pos(stuck=True)
+                # 初めて障害物に衝突した場合
                 else:
                     collision_count = collision_count + 1
-                    item.update_special_pos(int(len(self.field)), n)
+                    item.update_special_pos(int(len(self.field)), kind)
                     self.post_collision_processing(list(items),
-                                                   n,
+                                                   kind,
                                                    collision_count)
-            elif collided_wall and n == 2 or collided_block and n == 1:
+            # プレイヤーが障害物に，敵が壁に衝突した場合
+            elif collided_wall and kind == 2 or collided_block and kind == 1:
                 item.update_pos(stuck=True)
+            # どれにも当てはまらない場合，位置を更新
             else:
                 item.update_pos()
         return None

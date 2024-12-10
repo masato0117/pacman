@@ -51,7 +51,7 @@ class Game():
         f_size = params.field_size  # フィールドのサイズ
         e_num = params.enemy_num + (self.clear_count % 30)  # 敵の数
         f_num = params.food_num  # 食べ物の数
-        not_blank_space = []  # 空白ではない数
+        item_space = []  # アイテムがある場所
         # フィールドの初期化
         self.players = [
             Player(random(1, f_size - 2), random(1, f_size - 2))
@@ -80,16 +80,18 @@ class Game():
             for y in range(1, f_size - 2)
             if x == random(1, f_size - 2) or y == random(1, f_size - 2)
         ]
-        # 空白の位置とアイテムがある位置の識別
+        # アイテムの位置が重複している場合，新たな座標を付与
         for item in self.players + self.enemies + self.foods + self.blocks:
-            print(item)
-            if item not in not_blank_space:
-                not_blank_space.append(item)
+            if item.now_x * item.now_y not in item_space:
+                item_space.append(item.now_x * item.now_y)
             else:
                 while True:
-                    item = (random(1, f_size - 2), random(1, f_size - 2))
-                    if item not in not_blank_space:
-                        not_blank_space.append(item)
+                    item.now_x = random(1, f_size - 2)
+                    item.now_y = random(1, f_size - 2)
+                    if item.now_x * item.now_y not in item_space:
+                        item_space.append(item.now_x * item.now_y)
+                        item.next_x = item.now_x
+                        item.next_y = item.now_y
                         break
 
         self.field = Field(
